@@ -11,19 +11,16 @@ import Interfaces.Tool;
 public class TestTool implements Tool {
 
 	private Image toDraw;
+	private Image curImage;
 	
 	public TestTool(){
-		toDraw = createImageWithText();
+		toDraw = null;
 	}
 	
-	 private Image createImageWithText(){
-		  BufferedImage bufferedImage = new 
-	      BufferedImage(200,200,BufferedImage.TYPE_INT_RGB);
-	      Graphics g = bufferedImage.getGraphics();
-	
-	      g.drawString("Emma smells like dangus", 20,20);
-	      return bufferedImage;
-	 }
+	public TestTool(Image curImage){
+		this.curImage = curImage;
+		toDraw = curImage;
+	}
 	
 	@Override
 	public boolean undo() {
@@ -57,8 +54,20 @@ public class TestTool implements Tool {
 
 	@Override
 	public void paint(Graphics g, JPanel panel) {
-		// TODO Auto-generated method stub
+		if(toDraw == null) return;
+		
 		g.drawImage(toDraw, 20, 20, panel);
 	}
+	
+	@Override
+	public void setImage(Image g){
+		
+		this.curImage = g;
+	}
 
+	@Override
+	public Image getImage(){
+		return curImage;
+	}
+	
 }
