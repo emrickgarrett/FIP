@@ -5,6 +5,8 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
+import com.FIP.Main;
+
 public interface Tool {
 	
 	public boolean undo();
@@ -14,6 +16,6 @@ public interface Tool {
 	public boolean export();
 	public void setImage(Image g);
 	public Image getImage();
-	public void paint(Graphics g, JPanel panel);
+	public void paint(Graphics g, Main main);
 	
 }

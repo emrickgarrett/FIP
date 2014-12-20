@@ -2,9 +2,8 @@ package Tools;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 
-import javax.swing.JPanel;
+import com.FIP.Main;
 
 import Interfaces.Tool;
 
@@ -53,10 +52,10 @@ public class TestTool implements Tool {
 	}
 
 	@Override
-	public void paint(Graphics g, JPanel panel) {
+	public void paint(Graphics g, Main main) {
 		if(toDraw == null) return;
 		
-		g.drawImage(toDraw, 20, 20, panel);
+		g.drawImage(toDraw, 20+main.getXOffset(), 20+main.getYOffset(), main);
 	}
 	
 	@Override

@@ -1,8 +1,11 @@
+package com.FIP;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Interfaces.Tool;
+import Listeners.FIPMotionListener;
 import Tools.TestTool;
 
 /**
@@ -48,16 +52,30 @@ public class Main extends JPanel{
 	public static int WIDTH = 800;
 	public static int HEIGHT = 600;
 	private Tool curTool;
+	static String Downloads = "Downloads/";
+	public int xOffset = 0, yOffset = 0;
 	
 	public Main(){
+		FIPMotionListener fipListener = new FIPMotionListener(this);
+		
 		initMenus();
+		initDirectories();
+		frame.addMouseMotionListener(fipListener);
+		frame.addMouseListener(fipListener);
 		images = new ArrayList<BufferedImage>();
 	}
 	
 	@Override
 	 public void paint(Graphics g) {
+		g.setColor(Color.GRAY);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.setColor(Color.BLACK);
+		
 	      if(curTool != null)
 	    	  curTool.paint(g, this);
+	      if(images.size() > 0){
+	  		g.drawImage(images.get(0), 100+xOffset, 100+yOffset, this);
+	      }
 	 }
 	
 	 private Image createImageWithText(){
@@ -94,8 +112,6 @@ public class Main extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				System.err.println("Not Implemented Yet");
 				fileChooser = new JFileChooser();
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
 				fileChooser.setFileFilter(filter);
@@ -126,10 +142,11 @@ public class Main extends JPanel{
 				String fileName = result.substring(result.lastIndexOf("/"),result.length());
 				//Download image and display it...
 				System.out.println("Downloading Image From: " + result);
+				System.out.println("Putting Image in Downloads/ Folder");
 				try{
 					URL url = new URL(result);
 					InputStream inputStream = url.openStream();
-					OutputStream outputStream = new FileOutputStream(result);
+					OutputStream outputStream = new FileOutputStream(Main.Downloads + fileName.substring(1, fileName.length()));
 					byte[] buffer = new byte[2048];
 					int length = 0;
 					while((length = inputStream.read(buffer)) != -1){
@@ -140,8 +157,6 @@ public class Main extends JPanel{
 				}catch(Exception ex){
 					System.err.println("Error downloading the image... " + ex);
 				}
-				
-				System.out.println(fileName);
 				
 			}
 			
@@ -194,5 +209,38 @@ public class Main extends JPanel{
 		
 		Main.frame.setJMenuBar(menuBar);
 	}
+	
+	private void initDirectories(){
+		File downloadDir = new File(Main.Downloads);
 
+		  // if the directory does not exist, create it
+		  if (!downloadDir.exists()) {
+		    System.out.println("Creating directory: " + Main.Downloads);
+		    boolean result = false;
+
+		    try{
+		        downloadDir.mkdir();
+		        result = true;
+		     } catch(SecurityException se){
+		        //handle it
+		     }        
+		     if(result) {    
+		       System.out.println("Directory created");  
+		     }
+		  }
+	}
+
+	
+	public void incrementOffsets(int x, int y){
+		xOffset += x;
+		yOffset += y;
+	}
+	
+	public int getYOffset(){
+		return yOffset;
+	}
+	
+	public int getXOffset(){
+		return xOffset;
+	}
 }
