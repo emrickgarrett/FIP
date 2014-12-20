@@ -48,7 +48,6 @@ public class Main extends JPanel{
 	private JMenuItem saveItem;
 	private JMenuItem exitItem;
 	private JFileChooser fileChooser;
-	private ArrayList<BufferedImage> images;
 	public static int WIDTH = 800;
 	public static int HEIGHT = 600;
 	private Tool curTool;
@@ -62,7 +61,7 @@ public class Main extends JPanel{
 		initDirectories();
 		frame.addMouseMotionListener(fipListener);
 		frame.addMouseListener(fipListener);
-		images = new ArrayList<BufferedImage>();
+		FIPImage.images = new ArrayList<FIPImage>();
 	}
 	
 	@Override
@@ -73,8 +72,8 @@ public class Main extends JPanel{
 		
 	      if(curTool != null)
 	    	  curTool.paint(g, this);
-	      if(images.size() > 0){
-	  		g.drawImage(images.get(0), 100+xOffset, 100+yOffset, this);
+	      if(FIPImage.images.size() > 0){
+	  		g.drawImage(FIPImage.images.get(0).getImage(), FIPImage.images.get(0).getX()+xOffset, FIPImage.images.get(0).getY()+yOffset, this);
 	      }
 	 }
 	
@@ -113,13 +112,13 @@ public class Main extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				fileChooser = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF FIPImage.images", "jpg", "gif");
 				fileChooser.setFileFilter(filter);
 				int returnVal = fileChooser.showOpenDialog(Main.frame);
 				if(returnVal == JFileChooser.APPROVE_OPTION){
 					System.out.println("Opening File... " + fileChooser.getSelectedFile().getName());
 					try{
-						images.add(ImageIO.read(fileChooser.getSelectedFile()));
+						FIPImage.images.add(new FIPImage(ImageIO.read(fileChooser.getSelectedFile()), xOffset, yOffset));
 					}catch(Exception ex){
 						System.err.println("Error reading the file: " + ex);
 					}
