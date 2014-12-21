@@ -10,6 +10,8 @@ public class FIPImage{
 	private int yOffset = 0;
 	private int width;
 	private int height;
+	private int id = 0;
+	static public int count = 0;
 	static public ArrayList<FIPImage> images;
 	
 	public FIPImage(BufferedImage image, int x, int y){
@@ -18,6 +20,8 @@ public class FIPImage{
 		this.yOffset = y;
 		this.width = image.getWidth();
 		this.height = image.getHeight();
+		FIPImage.count++;
+		this.id = FIPImage.count;
 	}
 	
 	public int getX(){
@@ -52,12 +56,16 @@ public class FIPImage{
 		this.image = image;
 	}
 	
+	public int getID(){
+		return this.id;
+	}
+	
 	public static FIPImage checkCollisions(int x, int y, Main main){
 		//To simulate depth, it will check entire array and return last one. It's LIFO instead of FIFO
 		FIPImage result = null;
 		for(int i = 0; i < images.size(); i++){
-			if(x+main.xOffset > images.get(0).xOffset && x+main.xOffset < images.get(0).xOffset+images.get(0).width && y+main.yOffset > images.get(0).yOffset && y+main.yOffset < images.get(0).yOffset+images.get(0).height)
-				result =  images.get(0);
+			if(x > images.get(i).xOffset+main.xOffset && x < images.get(i).xOffset+images.get(i).width+main.xOffset && y > images.get(i).yOffset+main.yOffset && y < images.get(i).yOffset+images.get(i).height+main.yOffset)
+				result =  images.get(i);
 		}
 		
 		return result;

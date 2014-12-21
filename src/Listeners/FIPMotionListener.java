@@ -25,8 +25,8 @@ public class FIPMotionListener implements MouseMotionListener, MouseListener{
 			if(selectedImage == null){
 				main.incrementOffsets(lastX-e.getX(), lastY - e.getY());
 			}else{
-				selectedImage.incX(lastX-e.getX());
-				selectedImage.incY(lastY-e.getY());
+				selectedImage.incX((lastX-e.getX())*-1);
+				selectedImage.incY((lastY-e.getY())*-1);
 			}
 		}
 		lastX = e.getX();
@@ -44,12 +44,11 @@ public class FIPMotionListener implements MouseMotionListener, MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println("Clicked");
+		
 		if(e.getButton() == MouseEvent.BUTTON1){
 			selectedImage = FIPImage.checkCollisions(e.getX(), e.getY(), main);
 			if(selectedImage != null){
-				System.err.println("Hey!");
+				System.out.println("Selected: " + selectedImage.getID());
 			}
 		}
 		

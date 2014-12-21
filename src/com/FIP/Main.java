@@ -73,7 +73,8 @@ public class Main extends JPanel{
 	      if(curTool != null)
 	    	  curTool.paint(g, this);
 	      if(FIPImage.images.size() > 0){
-	  		g.drawImage(FIPImage.images.get(0).getImage(), FIPImage.images.get(0).getX()+xOffset, FIPImage.images.get(0).getY()+yOffset, this);
+	    	  for(int i = 0; i < FIPImage.images.size(); i++)
+	    		  g.drawImage(FIPImage.images.get(i).getImage(), FIPImage.images.get(i).getX()+xOffset, FIPImage.images.get(i).getY()+yOffset, this);
 	      }
 	 }
 	
