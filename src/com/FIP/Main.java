@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Interfaces.Tool;
+import Listeners.FIPComponentListener;
 import Listeners.FIPMotionListener;
 import Tools.TestTool;
 
@@ -38,7 +39,7 @@ import Tools.TestTool;
 public class Main extends JPanel{
 
 	private static final long serialVersionUID = 1L;
-	static JFrame frame;
+	public static JFrame frame;
 	private JMenu toolMenu;
 	private JMenu fileMenu;
 	private JMenuBar menuBar;
@@ -61,6 +62,7 @@ public class Main extends JPanel{
 		initDirectories();
 		frame.addMouseMotionListener(fipListener);
 		frame.addMouseListener(fipListener);
+		frame.addComponentListener(new FIPComponentListener());
 		FIPImage.images = new ArrayList<FIPImage>();
 	}
 	
